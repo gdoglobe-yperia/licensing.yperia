@@ -1,0 +1,243 @@
+﻿@using Web_App_Licensing.Models.dbContext;
+@model Web_App_Licensing.Models.dbContext.tblLicense
+
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@{
+    var LicenseTypes = new List<SelectListItem>();
+
+    var tltModel = (List<tblLicenseType>)ViewData["LicenseTypes"];
+    LicenseTypes.Add(new SelectListItem { Value = "0", Text = "--select--" });
+    foreach (tblLicenseType tlt in tltModel)
+    {
+        LicenseTypes.Add(new SelectListItem { Value = tlt.ID.ToString(), Text = tlt.Name });
+    }
+}
+
+
+<button type='button' id='AddNewCompany' class="btn btn-primary">Nouvelle Compagnie</button>
+@using (Html.BeginForm("Create", "Subscription", FormMethod.Post, new { @name = "CreateSubscriptionForm", @id = "CreateSubscriptionForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div id="PartialCompany">
+        @Html.Partial("~/Views/Subscription/SelectCompany.cshtml")
+    </div>
+    <h2>Veillez saisir les informations de la license</h2>
+
+
+    <div class="form-group">
+
+        <p><label for="" class="label-input">License</label> @Html.DropDownList("LicenseTypeID", LicenseTypes, new { @class = "form-control", @required = "required", @min = "1", @title = "champ obligatoire" })</p>
+    </div>
+    <div id="divPartialView" class="form-group">
+        @Html.Partial("~/Views/Subscription/SelectSubscriptionPack.cshtml")
+    </div>
+    <div>
+        <label for="" class="label-input">Date d'activation</label>
+        <input type="date" id="SubscriptionDate" name="Licence[0].SubscriptionDate" min="@DateTime.Now.Date" title="champ obligatoire" required>
+    </div>
+    <div class="form-group">
+        <label for="" class="label-input">Date d'expiration</label>
+        <input type="date" id="ExpirationDate" name="Licence[0].ExpirationDate" min="@DateTime.Now.Date">
+    </div>
+    <div class="form-group align-center">
+        <label for="" class="label-input pb-5">Pas de date d'expiration</label>
+        <input type="checkbox" id="ExpirationDateCheck">
+    </div>
+
+    <div class="form-group">
+        <label for="" class="label-input">Nombre d'utilisateur</label>
+        <input type="number" name="Licence[0].NumberUsers" min="0" value="0" title="champ obligatoire" required>
+    </div>
+
+    <div class="alert alert-info" role="alert" id="alert">
+        <span></span>
+    </div>
+
+    <div class="form-group">
+
+        <button type='button' class="btn btn-primary" id="CreateSubscriptionFormSubmit">Submit</button>
+        <button type="reset" class="btn btn-danger">Cancel</button>
+    </div>
+}
+
+
+@if (ViewBag.Message != null)
+{
+    @Html.Raw(ViewBag.Message)
+    ViewBag.Message = null;
+}
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var $ExpirationDate = $("#ExpirationDate");
+        var $SubscriptionDate = $("#SubscriptionDate");
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementsByName("Licence[0].SubscriptionDate")[0].setAttribute('min', today);
+
+
+
+        $ExpirationDate.attr('disabled', true);
+
+        $SubscriptionDate.change(function () {
+            if ($SubscriptionDate.val().length != 0) {
+                var today = new Date($SubscriptionDate.val()).toISOString().split('T')[0];
+                document.getElementsByName("Licence[0].ExpirationDate")[0].setAttribute('min', today);
+                $ExpirationDate.val('');
+                $ExpirationDate.attr('disabled', false);
+            }
+
+            else {
+                $ExpirationDate.val('');
+                $ExpirationDate.attr('disabled', true);
+            }
+        });
+
+        $SubscriptionDate.hover(function () {
+            if ($SubscriptionDate.val().length != 0) {
+                var today = new Date($SubscriptionDate.val()).toISOString().split('T')[0];
+                document.getElementsByName("Licence[0].ExpirationDate")[0].setAttribute('min', today);
+
+                $ExpirationDate.attr('disabled', false);
+            }
+            else {
+                $ExpirationDate.val('');
+                $ExpirationDate.attr('disabled', true);
+            }
+
+        })
+        $ExpirationDate.hover(function () {
+            if ($SubscriptionDate.val().length != 0) {
+                var today = new Date($SubscriptionDate.val()).toISOString().split('T')[0];
+                document.getElementsByName("Licence[0].ExpirationDate")[0].setAttribute('min', today);
+
+
+                $ExpirationDate.attr('disabled', false);
+            }
+            else
+            {
+                $ExpirationDate.val('');
+                $ExpirationDate.attr('disabled', true);
+            }
+
+        })
+
+
+
+
+
+
+
+
+
+        var $AddNewCompany = $("#AddNewCompany");
+        $AddNewCompany.click(function ()
+        {
+            $.ajax({
+                url: '@Url.Action("AddCompany", "Subscription")',
+                data: { /*add other additional parameters */ },
+                cache: false,
+                type: "POST",
+                dataType: "html",
+                success: function (data, textStatus, XMLHttpRequest) {
+                    SetPartialCompany(data);
+                },
+                error: function (data) { onError(data); }
+            });
+        });
+
+
+        $("#LicenseTypeID").change(function (event) {
+            $.ajax({
+                url: '@Url.Action("SelectSubscriptionPack", "Subscription")',
+                data: { LicenseTypeID: $("#LicenseTypeID").val() /*add other additional parameters */ },
+                cache: false,
+                type: "POST",
+                dataType: "html",
+                success: function (data, textStatus, XMLHttpRequest) {
+                    SetData(data);
+                },
+                error: function (data) { onError(data); }
+            });
+        });
+
+        function SetData(data) {
+            $("#divPartialView").html(data); //HTML DOM replace
+        }
+
+
+
+        function SetPartialCompany(data) {
+            $("#AddNewCompany").hide();
+            $("#PartialCompany").html(data); //HTML DOM replace
+        }
+
+        $("#alert").hide();
+
+        $("#CreateSubscriptionFormSubmit").click(function () {
+            if ($("#ExpirationDateCheck").is(':checked')) {
+                if ($("#ExpirationDate").val().length != 0) {
+                    $("#ExpirationDate").removeAttr('value');
+                    $("#alert span").text("Veillez decoher la case ou supprimez la date d'expiration");
+                    $("#alert").show();
+                    return false;
+                }
+                else {
+                    $("#ExpirationDate").removeAttr('value');
+                
+                    if ($("#LicenseTypeID").val() > 0 && $('select[name="Licence[0].CompanyID"]').val() != -1 && $('select[name="Licence[0].SubscriptionPackID"]').val() > 0) {
+                        
+                        $("#alert").hide();
+                        $("#CreateSubscriptionForm").submit();
+                       
+                    }
+                    else {
+                        $("#ExpirationDate").removeAttr('value');
+                        $("#alert span").text("Veillez selectionner les valeurs de chaque menu deroulante");
+                        $("#alert").show();
+                        return false;
+
+                    }
+
+
+                }
+
+            }
+            else {
+                if ($("#ExpirationDate").val().length != 0 )
+                {
+                    $("#alert").hide();
+
+                    if ($("#LicenseTypeID").val() > 0 && $('select[name="Licence[0].CompanyID"]').val() != -1 && $('select[name="Licence[0].SubscriptionPackID"]').val() > 0) {
+           
+                        $("#alert").hide();
+                        $("#CreateSubscriptionForm").submit();
+                 
+
+                    }
+                    else {
+                        $("#ExpirationDate").removeAttr('value');
+                        $("#alert span").text("Veillez selectionner les valeurs de chaque menu deroulante");
+                        $("#alert").show();
+                        return false;
+
+                    }
+                }
+                else {
+                    $("#alert span").text("selectionner la date d'expiration ou cocher la date s'il n'y en a pas");
+                    $("#alert").show();
+                    return false;
+                }
+            }
+        });
+
+    });
+</script>

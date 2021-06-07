@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS0006: Fichier de métadonnées '..\..\Encryption - Copie\bin\Debug\ClassLibrary.dll' introuvable
+dotnet_diagnostic.CS0006.severity = none

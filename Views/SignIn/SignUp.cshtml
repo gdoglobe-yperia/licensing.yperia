@@ -1,0 +1,70 @@
+﻿@model Web_App_Licensing.Models.dbContext.tblAdmin
+@{
+    Layout = "~/Views/Shared/_SignIn.cshtml";
+    ViewBag.Title = "Inscription";
+}
+
+
+
+<section class="mt-5 h-100 container-fluid align-items-center justify-content-center">
+    <section class="h-100 align-items-center justify-content-center">
+        <header class="container h-100 align-items-center justify-content-center">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="container" id="sec-login">
+
+                    <div class="row no-gutters">
+                        <div class="col-6 col-sm-6 bg-info" id="login-div-1">
+                            <img src="~/assets/img/style/vert-yperia.jpg" />
+                            <div class="row">
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-8" id="login-div">
+                                    <h3>S'inscrire</h3>
+                                    <hr />
+                                    @using (Html.BeginForm("SignUp", "SignIn", FormMethod.Post))
+                                    {
+                                        @Html.HiddenFor(x => x.ID)
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(x => x.Firstname, "Prénom")
+                                            @Html.ValidationMessageFor(x => x.Firstname, "", new { @class = "error" })
+                                            @Html.TextBoxFor(x => x.Firstname, new { @class = "form-control", @placeholder = "Jean", @type = "text", @required = "required" , @minlength = "1", title = "champ obligatoire" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(x => x.Name, "Nom")
+                                            @Html.ValidationMessageFor(x => x.Name, "", new { @class = "error" })
+                                            @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "DUPONT", @type = "text", @required = "required", @minlength = "1", title = "champ obligatoire" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(x => x.Email, "Email")
+                                            @Html.ValidationMessageFor(x => x.Email, "", new { @class = "error" })
+                                            @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "example@domain.com", @type = "email", @required = "required", @minlength = "1", title = "email valide obligatoire", pattern = "[a-zA-Z0-9!#$%&amp;'*+\\/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(x => x.Password, "Mot de passe")
+
+                                            @Html.ValidationMessageFor(x => x.Password, "", new { @class = "error" })
+                                            @Html.TextBoxFor(x => x.Password, new { @class = "form-control", @placeholder = "********", @type = "password" , @required = "required", minlength = "6", title = "6 caractères minimum" })
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Incription</button>
+                                        <hr />
+                                    }
+                                    @if (ViewBag.Message != null)
+                                    {
+                                        @Html.Raw(ViewBag.Message)
+                                        ViewBag.Message = null;
+                                    }
+                                    @Html.ActionLink("Connexion", "Index", "SignIn", new { @class = "btn btn-link" })
+                                    @Html.ActionLink("Mot de passe oublié", "ForgotPassword", "SignIn", new { @class = "btn btn-link" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-6" id="login-div-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </section>
+</section>

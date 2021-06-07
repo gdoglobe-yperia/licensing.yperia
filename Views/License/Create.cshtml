@@ -1,0 +1,111 @@
+﻿
+@model Web_App_Licensing.Models.dbContext.tblLicenseType
+@{
+    ViewBag.Title = "Ajouter une licence";
+}
+
+
+
+
+
+
+
+
+<div class="container">
+
+    <div class="wrapper">
+        <div class="inner">
+            @using (Html.BeginForm("Create", "License", FormMethod.Post))
+            {
+
+                <h3>CREER UN TYPE DE LICENCE</h3>
+                <h2>Veillez saisir les informations de votre de la licence</h2>
+                @Html.HiddenFor(x => x.ID)
+                <div class="form-group">
+
+                    <label for="" class="label-input">Nom</label>
+                    @Html.ValidationMessageFor(x => x.Name, "", new { @class = "error" })
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "", @type = "text", @required = "required", @minlength = "1", title = "email valide obligatoire" })
+                </div>
+                <div class="form-group">
+                    <label for="" class="label-input">Code</label>
+                    @Html.ValidationMessageFor(x => x.Code, "", new { @class = "error" })
+                    @Html.TextBoxFor(x => x.Code, new { @class = "form-control", @placeholder = "", @type = "text", @required = "required", @minlength = "1", title = "email valide obligatoire" })
+                </div>
+                <div class="form-group">
+                    <label for="" class="label-input">Type</label>
+                    @Html.ValidationMessageFor(x => x.Type, "", new { @class = "error" })
+                    @Html.TextBoxFor(x => x.Type, new { @class = "form-control", @placeholder = "", @type = "text", @required = "required", @minlength = "1", title = "email valide obligatoire" })
+
+                </div>
+
+                <div>
+                    <p class="btn btn-primary" , role="button" , id="AddPack">Ajouter un pack</p>
+                 
+                </div>
+
+                <fieldset class="border p-2 form-group">
+                    <legend class="control-label pl-1">Pack licence</legend>
+                    <div class="" id="divPartialView">
+
+
+                    </div>
+                </fieldset>
+
+
+
+                <input id="counter" name="counter" type="hidden" value="-1">
+
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="reset" class="btn btn-danger">Cancel</button>
+                </div>
+            }
+            
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var $counter = $("#counter");
+        var $buttonAddPack = $("#AddPack");
+        $buttonAddPack.click(function () {
+            $counter.val(parseInt($counter.val()) + 1);
+        $.ajax({
+            url: '@Url.Action("AddSubscriptionPack", "License")',
+            data: { counter: $counter.val() /*add other additional parameters */ },
+            cache: false,
+            type: "POST",
+            dataType: "html",
+            success: function (data, textStatus, XMLHttpRequest) {
+                SetData(data);
+            },
+            error: function (data) { onError(data); }
+        });
+    });
+        $("#divPartialView").on('click', '.itemDelete', function () {
+            $(this).closest('div').remove();
+            $("#divPartialView > label").each(function (index) {
+                $(this).attr('for', "SubscriptionPack[" + index + "].Name");
+                $('#divPartialView > input').eq(index).attr('name', "SubscriptionPack[" + index + "].Name");
+                
+            });
+
+
+            $counter.val(parseInt($counter.val()) - 1);
+
+    });
+    function SetData(data) {
+        $("#divPartialView").append(data); //HTML DOM replace
+
+    }
+});
+</script>
+
+
+
+

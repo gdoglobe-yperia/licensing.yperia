@@ -1,0 +1,17 @@
+﻿@{ 
+    var counter = (int)ViewData["counter"];
+}
+
+
+<div class="form-group">
+    <a href='#' title='Remove Item' class='itemDelete'>X</a>
+    <label for="SubscriptionPack[@counter].Name" class="label-input">Name</label>
+    <input type="text" name="SubscriptionPack[@counter].Name" value="" required/>
+
+
+</div>
+
+<div class="form-group">
+    <label for="SubscriptionPack[@counter].GraceDays" class="label-input">Nombre Jours De Grace</label>
+    <input type="number" name="SubscriptionPack[@counter].GraceDays" min="45" max="100" value="45" required>
+</div>

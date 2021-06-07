@@ -1,0 +1,60 @@
+﻿@model List<Web_App_Licensing.Models.dbContext.tblLicense>
+
+@{
+    ViewBag.Title = "Abonnement";
+    
+}
+
+
+
+
+@Html.ActionLink("Ajouter", "Create", "Subscription", null, new { @class = "btn btn-primary", @role = "button" })
+
+<table class="table table-hover">
+
+
+    <thead>
+
+        <tr>
+            <th scope="col">N°</th>
+            <th scope="col">Compagnie</th>
+            <th scope="col">Email</th>
+            <th scope="col">Code</th>
+            <th scope="col">Licence</th>
+            <th scope="col">Type Licence</th>
+            <th scope="col">Pack Licence</th>
+            <th scope="col">Status</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+           
+                <tr class="">
+
+                    <th scope="col">@item.ID</th>
+                    <th scope="col">@item.tblCompany.Name</th>
+                    <th scope="col">@item.tblCompany.Email</th>
+                    <th scope="col">@item.tblCompany.Code</th>
+                    <th scope="col"><a href="@Url.Action("Show","Subscription", new { item.ID})" class="">@item.tblLicenseType.Name</a></th>
+                    <th scope="col">@item.tblLicenseType.Type</th>
+                    <th scope="col">@item.tblSubscriptionPack.Name</th>
+                    @if (@item.ExpirationDate > DateTime.Now)
+                    {
+                        <th scope="col" class="text-success">ACTIVE</th>
+                    }
+                    else
+                    {
+                        <th scope="col" class="text-danger">EXPIRE</th>
+                    }
+                   
+                </tr>
+            
+            
+
+        }
+    </tbody>
+</table>
+

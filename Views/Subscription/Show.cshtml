@@ -1,0 +1,75 @@
+﻿@model Web_App_Licensing.Models.dbContext.tblLicense
+
+<div>
+    <h4>tblLicense</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.KeyLicense)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KeyLicense)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SubscriptionDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubscriptionDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpirationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExpirationDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberUsers)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberUsers)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberActiveUsers)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberActiveUsers)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblCompany.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblCompany.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblLicenseType.Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblLicenseType.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblSubscriptionPack.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblSubscriptionPack.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    | @Html.ActionLink("Back to List", "Index")
+</p>

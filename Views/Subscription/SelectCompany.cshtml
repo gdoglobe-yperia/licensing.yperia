@@ -1,0 +1,15 @@
+﻿@model Web_App_Licensing.Models.dbContext.tblLicense
+@using Web_App_Licensing.Models.dbContext;
+
+@{
+    var Companies = new List<SelectListItem>();
+
+    var CompaniesModel = (List<tblCompany>)ViewData["Companies"];
+    Companies.Add(new SelectListItem { Value = "-1", Text = "--select--" });
+    foreach (tblCompany tc in CompaniesModel)
+    {
+        Companies.Add(new SelectListItem { Value = tc.ID.ToString(), Text = tc.Name + " " + tc.Code });
+    }
+}
+
+<p><label for="" class="label-input">Compagnie</label> @Html.DropDownList("Licence[0].CompanyID", Companies, new { @class = "form-control", @title = "champ obligatoire", @required = "required" })</p>

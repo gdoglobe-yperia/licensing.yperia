@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8dcc3728a7154bc3bd1624c6bdc99f53" Name="Diagram1">
+        <EntityTypeShape EntityType="LicensingDbModel.tblCompany" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LicensingDbModel.tblCompanyUser" Width="1.75" PointX="3" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LicensingDbModel.tblKeyGenesis" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LicensingDbModel.tblLicense" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="LicensingDbModel.tblLicenseType" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LicensingDbModel.tblSubscriptionPack" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
+        <AssociationConnector Association="LicensingDbModel.FK_dbCompanyUsers_dbCompanies" ManuallyRouted="false" />
+        <AssociationConnector Association="LicensingDbModel.FK_dbLicense_dbCompany" ManuallyRouted="false" />
+        <AssociationConnector Association="LicensingDbModel.FK_dbLicense_dbLicenseType" ManuallyRouted="false" />
+        <AssociationConnector Association="LicensingDbModel.FK_dbLicense_dbSubscriptionPack" ManuallyRouted="false" />
+        <AssociationConnector Association="LicensingDbModel.tblLicenseUser" ManuallyRouted="false" />
+        <AssociationConnector Association="LicensingDbModel.FK_tblSubscriptionPack_tblLicenseType" />
+        <EntityTypeShape EntityType="LicensingDbModel.tblAdmin" Width="1.5" PointX="7.375" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
